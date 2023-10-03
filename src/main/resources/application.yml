@@ -4,9 +4,9 @@ spring:
     database: postgresql
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: ${FIAPBOOK_POSTGRES_URL}
-    username: ${FIAPBOOK_POSTGRES_USERNAME}
-    password: ${FIAPBOOK_POSTGRES_PASSWORD}
+    url: ${NURSINGCALCULATOR_POSTGRES_URL}
+    username: ${NURSINGCALCULATOR_POSTGRES_USERNAME}
+    password: ${NURSINGCALCULATOR_POSTGRES_PASSWORD}
   flyway:
     baseline-on-migrate: true
     schemas: 'flyway'
@@ -23,4 +23,4 @@ server:
 api:
   security:
     token:
-      secret: ${FIAPBOOK_API_SECURITY_TOKEN_SECRET}
+      secret: ${NURSINGCALCULATOR_API_SECURITY_TOKEN_SECRET}

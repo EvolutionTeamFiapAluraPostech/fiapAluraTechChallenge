@@ -2,12 +2,12 @@ version: '3.1'
 
 services:
   fiapbook-db:
-    container_name: postgresql-fiapbook
+    container_name: postgresql-nursing
     image: postgres:15.1
     environment:
-      POSTGRES_DB: fiapbook
-      POSTGRES_USER: fiap-postgres-user
-      POSTGRES_PASSWORD: fiap-postgres-pwd
+      POSTGRES_DB: nursing-db
+      POSTGRES_USER: nursing-postgres-user
+      POSTGRES_PASSWORD: nursing-postgres-pwd
     ports:
       - 5432:5432
     volumes:
