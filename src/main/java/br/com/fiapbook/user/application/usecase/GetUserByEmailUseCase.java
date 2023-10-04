@@ -6,9 +6,9 @@ import br.com.fiapbook.shared.model.entity.validator.EmailValidator;
 import br.com.fiapbook.user.model.entity.User;
 import br.com.fiapbook.user.model.service.UserService;
 import jakarta.persistence.NoResultException;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class GetUserByEmailUseCase {
   private final UserService userService;
   private final EmailValidator emailValidator;

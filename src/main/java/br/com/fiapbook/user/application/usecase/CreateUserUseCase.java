@@ -5,10 +5,10 @@ import br.com.fiapbook.user.application.validator.UserPasswordStrengthValidator;
 import br.com.fiapbook.user.model.entity.User;
 import br.com.fiapbook.user.model.service.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Component
+@Service
 public class CreateUserUseCase {
 
   private final UserService userService;

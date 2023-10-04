@@ -1,16 +1,16 @@
 package br.com.fiapbook.user.application.usecase;
 
 import br.com.fiapbook.shared.model.entity.validator.UuidValidator;
+import br.com.fiapbook.user.application.validator.UserEmailAlreadyRegisteredInOtherUserValidator;
 import br.com.fiapbook.user.model.entity.User;
 import br.com.fiapbook.user.model.messages.UserMessages;
 import br.com.fiapbook.user.model.service.UserService;
-import br.com.fiapbook.user.application.validator.UserEmailAlreadyRegisteredInOtherUserValidator;
 import jakarta.persistence.NoResultException;
 import java.util.UUID;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Component
+@Service
 public class UpdateUserUseCase {
 
   private final UserService userService;

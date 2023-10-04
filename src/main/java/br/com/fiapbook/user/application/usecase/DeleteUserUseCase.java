@@ -7,10 +7,10 @@ import br.com.fiapbook.user.model.entity.User;
 import br.com.fiapbook.user.model.service.UserService;
 import jakarta.persistence.NoResultException;
 import java.util.UUID;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Component
+@Service
 public class DeleteUserUseCase {
 
   private final UserService userService;
