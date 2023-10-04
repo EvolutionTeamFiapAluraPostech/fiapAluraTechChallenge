@@ -1,4 +1,4 @@
-package br.com.fiapbook.configure.jackson;
+package br.com.fiapbook.shared.configure.jackson;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;

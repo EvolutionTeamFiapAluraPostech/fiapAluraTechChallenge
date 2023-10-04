@@ -1,13 +1,13 @@
 package br.com.fiapbook.user.presentation.api;
 
-import br.com.fiapbook.user.model.usecase.CreateUserUseCase;
-import br.com.fiapbook.user.model.usecase.DeleteUserUseCase;
-import br.com.fiapbook.user.model.usecase.GetAllUsersUseCase;
-import br.com.fiapbook.user.model.usecase.GetUserByEmailUseCase;
-import br.com.fiapbook.user.model.usecase.GetUserByIdUseCase;
-import br.com.fiapbook.user.model.usecase.GetUsersByNameOrEmailUseCase;
-import br.com.fiapbook.user.model.usecase.GetUsersByNameUseCase;
-import br.com.fiapbook.user.model.usecase.UpdateUserUseCase;
+import br.com.fiapbook.user.application.usecase.CreateUserUseCase;
+import br.com.fiapbook.user.application.usecase.DeleteUserUseCase;
+import br.com.fiapbook.user.application.usecase.GetAllUsersUseCase;
+import br.com.fiapbook.user.application.usecase.GetUserByEmailUseCase;
+import br.com.fiapbook.user.application.usecase.GetUserByIdUseCase;
+import br.com.fiapbook.user.application.usecase.GetUsersByNameOrEmailUseCase;
+import br.com.fiapbook.user.application.usecase.GetUsersByNameUseCase;
+import br.com.fiapbook.user.application.usecase.UpdateUserUseCase;
 import br.com.fiapbook.user.presentation.dto.PostUserInputDto;
 import br.com.fiapbook.user.presentation.dto.PutUserInputDto;
 import br.com.fiapbook.user.presentation.dto.UserFilter;

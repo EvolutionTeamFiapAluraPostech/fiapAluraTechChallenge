@@ -1,10 +1,10 @@
-package br.com.fiapbook.user.model.usecase;
+package br.com.fiapbook.user.application.usecase;
 
 import br.com.fiapbook.shared.model.entity.validator.UuidValidator;
 import br.com.fiapbook.user.model.entity.User;
 import br.com.fiapbook.user.model.messages.UserMessages;
 import br.com.fiapbook.user.model.service.UserService;
-import br.com.fiapbook.user.model.validator.UserEmailAlreadyRegisteredInOtherUserValidator;
+import br.com.fiapbook.user.application.validator.UserEmailAlreadyRegisteredInOtherUserValidator;
 import jakarta.persistence.NoResultException;
 import java.util.UUID;
 import org.springframework.stereotype.Component;

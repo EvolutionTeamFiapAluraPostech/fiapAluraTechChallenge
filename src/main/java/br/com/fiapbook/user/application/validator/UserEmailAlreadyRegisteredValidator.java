@@ -1,4 +1,4 @@
-package br.com.fiapbook.user.model.validator;
+package br.com.fiapbook.user.application.validator;
 
 import static br.com.fiapbook.user.model.messages.UserMessages.USER_EMAIL_ALREADY_EXISTS;
 

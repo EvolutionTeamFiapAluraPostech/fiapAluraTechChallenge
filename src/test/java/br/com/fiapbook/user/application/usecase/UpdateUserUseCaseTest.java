@@ -1,4 +1,4 @@
-package br.com.fiapbook.user.model.usecase;
+package br.com.fiapbook.user.application.usecase;
 
 import static br.com.fiapbook.shared.testData.user.UserTestData.DEFAULT_USER_EMAIL;
 import static br.com.fiapbook.shared.testData.user.UserTestData.DEFAULT_USER_NAME;
@@ -9,9 +9,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import br.com.fiapbook.shared.model.entity.validator.UuidValidator;
+import br.com.fiapbook.user.application.validator.UserEmailAlreadyRegisteredInOtherUserValidator;
 import br.com.fiapbook.user.model.entity.User;
 import br.com.fiapbook.user.model.service.UserService;
-import br.com.fiapbook.user.model.validator.UserEmailAlreadyRegisteredInOtherUserValidator;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

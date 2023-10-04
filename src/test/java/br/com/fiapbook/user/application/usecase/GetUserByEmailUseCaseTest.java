@@ -1,4 +1,4 @@
-package br.com.fiapbook.user.model.usecase;
+package br.com.fiapbook.user.application.usecase;
 
 import static br.com.fiapbook.shared.testData.user.UserTestData.DEFAULT_USER_EMAIL;
 import static br.com.fiapbook.shared.testData.user.UserTestData.createUser;

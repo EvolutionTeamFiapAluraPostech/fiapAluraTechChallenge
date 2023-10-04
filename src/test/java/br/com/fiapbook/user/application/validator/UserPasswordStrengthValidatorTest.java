@@ -1,4 +1,4 @@
-package br.com.fiapbook.user.model.validator;
+package br.com.fiapbook.user.application.validator;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;

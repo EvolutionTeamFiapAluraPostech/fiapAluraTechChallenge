@@ -1,4 +1,4 @@
-package br.com.fiapbook.user.model.validator;
+package br.com.fiapbook.user.application.validator;
 
 import static br.com.fiapbook.shared.testData.user.UserTestData.DEFAULT_USER_UUID_FROM_STRING;
 import static br.com.fiapbook.shared.testData.user.UserTestData.createUser;

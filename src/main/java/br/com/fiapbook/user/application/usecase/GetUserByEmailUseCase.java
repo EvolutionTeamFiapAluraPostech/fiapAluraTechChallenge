@@ -1,4 +1,4 @@
-package br.com.fiapbook.user.model.usecase;
+package br.com.fiapbook.user.application.usecase;
 
 import static br.com.fiapbook.user.model.messages.UserMessages.USER_EMAIL_NOT_FOUND;
 
