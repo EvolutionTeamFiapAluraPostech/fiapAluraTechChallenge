@@ -1,7 +1,6 @@
 package br.com.fiapbook.user.model.entity;
 
 import br.com.fiapbook.shared.model.entity.BaseEntity;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -38,7 +37,7 @@ public class User extends BaseEntity implements UserDetails {
   @Column(nullable = false)
   private String password;
 
-  @ManyToMany(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
+  @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(schema = "user_management", name = "users_authorities",
       joinColumns = @JoinColumn(name = "user_id"),
       inverseJoinColumns = @JoinColumn(name = "authority_id"))
