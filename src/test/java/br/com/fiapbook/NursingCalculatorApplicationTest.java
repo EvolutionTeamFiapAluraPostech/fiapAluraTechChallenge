@@ -10,18 +10,18 @@ import org.springframework.context.ApplicationContext;
 
 @IntegrationTest
 @DatabaseTest
-class FiapbookApplicationTest {
+class NursingCalculatorApplicationTest {
 
 	private final ApplicationContext applicationContext;
 
 	@Autowired
-	FiapbookApplicationTest(ApplicationContext applicationContext) {
+	NursingCalculatorApplicationTest(ApplicationContext applicationContext) {
 		this.applicationContext = applicationContext;
 	}
 
 	@Test
 	void contextLoads() {
-		var fiapBookApplication = applicationContext.getBean(FiapbookApplication.class);
+		var fiapBookApplication = applicationContext.getBean(NursingCalculatorApplication.class);
 		Assertions.assertThat(fiapBookApplication).isNotNull();
 	}
 

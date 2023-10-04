@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class FiapbookApplication {
+public class NursingCalculatorApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(FiapbookApplication.class, args);
+		SpringApplication.run(NursingCalculatorApplication.class, args);
 	}
 
 }
