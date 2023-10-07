@@ -145,3 +145,5 @@ Documentacao/Produtivo.ldb
 /build.txt
 
 .gradle/
+
+docker-compose.yml
