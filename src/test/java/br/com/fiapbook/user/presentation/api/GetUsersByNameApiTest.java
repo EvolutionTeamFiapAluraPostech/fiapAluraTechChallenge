@@ -1,6 +1,6 @@
 package br.com.fiapbook.user.presentation.api;
 
-import static br.com.fiapbook.shared.testData.user.UserTestData.DEFAULT_USER_NAME;
+import static br.com.fiapbook.shared.testData.user.UserTestData.ALTERNATIVE_USER_EMAIL;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -13,7 +13,6 @@ import br.com.fiapbook.shared.annotation.DatabaseTest;
 import br.com.fiapbook.shared.annotation.IntegrationTest;
 import br.com.fiapbook.shared.api.JsonUtil;
 import br.com.fiapbook.shared.api.PageUtil;
-import br.com.fiapbook.shared.testData.user.UserTestData;
 import br.com.fiapbook.user.model.entity.User;
 import br.com.fiapbook.user.presentation.dto.UserContent;
 import br.com.fiapbook.user.presentation.dto.UserOutputDto;
@@ -38,14 +37,16 @@ class GetUsersByNameApiTest {
     this.entityManager = entityManager;
   }
 
-  private User createUser() {
-    var user = UserTestData.createNewUser();
-    return entityManager.merge(user);
+  private User findUser() {
+    return (User) entityManager
+        .createQuery("SELECT u FROM User u WHERE email = :email")
+        .setParameter("email", "thomas.anderson@itcompany.com")
+        .getSingleResult();
   }
 
   @Test
   void shouldReturnUserWhenUserExists() throws Exception {
-    var user = createUser();
+    var user = findUser();
     var userPage = PageUtil.generatePageOfUser(user);
     var userExpected = UserOutputDto.toPage(userPage);
 
@@ -63,7 +64,7 @@ class GetUsersByNameApiTest {
 
   @Test
   void shouldReturnNotFoundWhenUserDoesNotExist() throws Exception {
-    var request = get(URL_USERS + DEFAULT_USER_NAME);
+    var request = get(URL_USERS + ALTERNATIVE_USER_EMAIL);
     mockMvc.perform(request)
         .andExpect(status().isOk())
         .andExpect(content().contentType(APPLICATION_JSON))

@@ -1,5 +1,8 @@
 package br.com.fiapbook.user.presentation.api;
 
+import static br.com.fiapbook.shared.testData.user.UserTestData.ALTERNATIVE_USER_EMAIL;
+import static br.com.fiapbook.shared.testData.user.UserTestData.ALTERNATIVE_USER_INPUT;
+import static br.com.fiapbook.shared.testData.user.UserTestData.ALTERNATIVE_USER_NAME;
 import static br.com.fiapbook.shared.testData.user.UserTestData.DEFAULT_USER_EMAIL;
 import static br.com.fiapbook.shared.testData.user.UserTestData.DEFAULT_USER_NAME;
 import static br.com.fiapbook.shared.testData.user.UserTestData.DEFAULT_USER_PASSWORD;
@@ -49,7 +52,7 @@ class PostUserApiTest {
   void shouldCreateUser() throws Exception {
     var request = post(URL_USERS)
         .contentType(APPLICATION_JSON)
-        .content(USER_INPUT);
+        .content(ALTERNATIVE_USER_INPUT);
     var mvcResult = mockMvc.perform(request)
         .andExpect(status().isCreated())
         .andExpect(content().contentType(APPLICATION_JSON))
@@ -60,8 +63,8 @@ class PostUserApiTest {
     var id = JsonPath.parse(contentAsString).read("$.id").toString();
     var userFound = entityManager.find(User.class, UUID.fromString(id));
     assertThat(userFound).isNotNull();
-    assertThat(userFound.getName()).isEqualTo(DEFAULT_USER_NAME);
-    assertThat(userFound.getEmail()).isEqualTo(DEFAULT_USER_EMAIL);
+    assertThat(userFound.getName()).isEqualTo(ALTERNATIVE_USER_NAME);
+    assertThat(userFound.getEmail()).isEqualTo(ALTERNATIVE_USER_EMAIL);
   }
 
   @Test
@@ -153,13 +156,6 @@ class PostUserApiTest {
 
   @Test
   void shouldReturnBadRequestWhenUserEmailAlreadyExits() throws Exception {
-    var user = User.builder()
-        .name(DEFAULT_USER_NAME)
-        .email(DEFAULT_USER_EMAIL)
-        .password(DEFAULT_USER_PASSWORD)
-        .build();
-    entityManager.persist(user);
-
     var request = post(URL_USERS)
         .contentType(APPLICATION_JSON)
         .content(USER_INPUT);

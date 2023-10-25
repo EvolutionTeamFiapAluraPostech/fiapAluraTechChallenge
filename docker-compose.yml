@@ -1,0 +1,20 @@
+version: '3.1'
+
+services:
+  nursing-db:
+    container_name: postgresql-nursing
+    image: postgres:15.1
+    environment:
+      POSTGRES_DB: nursing-db
+      POSTGRES_USER: nursing-postgres-user
+      POSTGRES_PASSWORD: nursing-postgres-pwd
+    ports:
+      - 5432:5432
+    volumes:
+      - /var/lib/postgres
+    networks:
+      - postgres-compose-network
+
+networks: 
+  postgres-compose-network:
+    driver: bridge

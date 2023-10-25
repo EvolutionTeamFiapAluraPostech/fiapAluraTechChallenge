@@ -50,7 +50,6 @@ tmp/**/*
 *.bak
 *.swp
 *~.nib
-*.properties
 .classpath
 .settings/
 .loadpath
@@ -139,11 +138,7 @@ identified-project-coordinates.json
 identified-project-coordinates.json
 Documentacao/Produtivo.ldb
 
-*.properties
-
 .vscode
 /build.txt
 
 .gradle/
-
-docker-compose.yml

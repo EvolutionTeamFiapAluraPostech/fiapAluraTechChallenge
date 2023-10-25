@@ -41,6 +41,13 @@ class GetUsersByNameOrEmailApiTest {
     return entityManager.merge(user);
   }
 
+  private User findUser() {
+    return (User) entityManager
+        .createQuery("SELECT u FROM User u WHERE email = :email")
+        .setParameter("email", "thomas.anderson@itcompany.com")
+        .getSingleResult();
+  }
+
   @Test
   void shouldReturnUserWhenFindUserByNameAndUserAlreadyExists() throws Exception {
     var user = createAndSaveUser();
@@ -98,7 +105,7 @@ class GetUsersByNameOrEmailApiTest {
 
   @Test
   void shouldReturnAllUsersWhenNameAndEmailAreEmptyUserAlreadyExists() throws Exception {
-    var user = createAndSaveUser();
+    var user = findUser();
     var userPage = PageUtil.generatePageOfUser(user);
     var userOutputDtoExpected = UserOutputDto.toPage(userPage);
 
@@ -117,7 +124,7 @@ class GetUsersByNameOrEmailApiTest {
 
   @Test
   void shouldReturnAllUsersWhenNameAndEmailParametersWereNotInformedAndUserAlreadyExists() throws Exception {
-    var user = createAndSaveUser();
+    var user = findUser();
     var userPage = PageUtil.generatePageOfUser(user);
     var userOutputDtoExpected = UserOutputDto.toPage(userPage);
 

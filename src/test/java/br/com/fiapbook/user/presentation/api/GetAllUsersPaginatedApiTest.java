@@ -12,7 +12,6 @@ import br.com.fiapbook.shared.annotation.DatabaseTest;
 import br.com.fiapbook.shared.annotation.IntegrationTest;
 import br.com.fiapbook.shared.api.JsonUtil;
 import br.com.fiapbook.shared.api.PageUtil;
-import br.com.fiapbook.shared.testData.user.UserTestData;
 import br.com.fiapbook.user.model.entity.User;
 import br.com.fiapbook.user.presentation.dto.UserContent;
 import br.com.fiapbook.user.presentation.dto.UserOutputDto;
@@ -35,14 +34,16 @@ class GetAllUsersPaginatedApiTest {
     this.entityManager = entityManager;
   }
 
-  private User createUser() {
-    var user = UserTestData.createNewUser();
-    return entityManager.merge(user);
+  private User findUser() {
+    return (User) entityManager
+        .createQuery("SELECT u FROM User u WHERE email = :email")
+        .setParameter("email", "thomas.anderson@itcompany.com")
+        .getSingleResult();
   }
 
   @Test
   void shouldReturnAllUsersWhenUsersExist() throws Exception {
-    var user = createUser();
+    var user = findUser();
     var userPage = PageUtil.generatePageOfUser(user);
     var userExpected = UserOutputDto.toPage(userPage);
 

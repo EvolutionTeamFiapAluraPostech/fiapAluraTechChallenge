@@ -1,7 +1,7 @@
 package br.com.fiapbook.user.presentation.api;
 
-import static br.com.fiapbook.shared.testData.user.UserTestData.DEFAULT_USER_EMAIL_TO_UPDATE;
-import static br.com.fiapbook.shared.testData.user.UserTestData.DEFAULT_USER_NAME_TO_UPDATE;
+import static br.com.fiapbook.shared.testData.user.UserTestData.ALTERNATIVE_USER_EMAIL;
+import static br.com.fiapbook.shared.testData.user.UserTestData.ALTERNATIVE_USER_NAME;
 import static br.com.fiapbook.shared.testData.user.UserTestData.DEFAULT_USER_PASSWORD;
 import static br.com.fiapbook.shared.testData.user.UserTestData.USER_TEMPLATE_UPDATE;
 import static br.com.fiapbook.shared.testData.user.UserTestData.USER_UPDATE;
@@ -45,11 +45,18 @@ class PutUserApiTest {
 
   private User createAndPersistUserWithDifferentAttributes() {
     var user = User.builder()
-        .name(DEFAULT_USER_NAME_TO_UPDATE)
-        .email(DEFAULT_USER_EMAIL_TO_UPDATE)
+        .name(ALTERNATIVE_USER_NAME)
+        .email(ALTERNATIVE_USER_EMAIL)
         .password(DEFAULT_USER_PASSWORD)
         .build();
     return entityManager.merge(user);
+  }
+
+  private User findUser() {
+    return (User) entityManager
+        .createQuery("SELECT u FROM User u WHERE email = :email")
+        .setParameter("email", "thomas.anderson@itcompany.com")
+        .getSingleResult();
   }
 
   @Test
@@ -69,8 +76,8 @@ class PutUserApiTest {
     var id = JsonPath.parse(contentAsString).read("$.id").toString();
     var userFound = entityManager.find(User.class, UUID.fromString(id));
     assertThat(userFound).isNotNull();
-    assertThat(userFound.getName()).isEqualTo(DEFAULT_USER_NAME_TO_UPDATE);
-    assertThat(userFound.getEmail()).isEqualTo(DEFAULT_USER_EMAIL_TO_UPDATE);
+    assertThat(userFound.getName()).isEqualTo(ALTERNATIVE_USER_NAME);
+    assertThat(userFound.getEmail()).isEqualTo(ALTERNATIVE_USER_EMAIL);
     assertThat(userFound.getPassword()).isEqualTo(DEFAULT_USER_PASSWORD);
   }
 
@@ -98,7 +105,7 @@ class PutUserApiTest {
 
   @Test
   void shouldReturnBadRequestWhenUserEmailAlreadyExistsInOtherUser() throws Exception {
-    var firstUser = createAndPersistUser();
+    var firstUser = findUser();
     var secondUser = createAndPersistUserWithDifferentAttributes();
 
     var request = put(URL_USERS + secondUser.getId())

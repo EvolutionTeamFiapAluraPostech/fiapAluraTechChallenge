@@ -1,7 +1,6 @@
 package br.com.fiapbook.user.presentation.api;
 
-import static br.com.fiapbook.shared.testData.user.UserTestData.DEFAULT_USER_EMAIL;
-import static br.com.fiapbook.shared.testData.user.UserTestData.createNewUser;
+import static br.com.fiapbook.shared.testData.user.UserTestData.ALTERNATIVE_USER_EMAIL;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -36,14 +35,16 @@ class GetUserByEmailApiTest {
     this.entityManager = entityManager;
   }
 
-  private User createUser() {
-    var user = createNewUser();
-    return entityManager.merge(user);
+  private User findUser() {
+    return (User) entityManager
+        .createQuery("SELECT u FROM User u WHERE email = :email")
+        .setParameter("email", "thomas.anderson@itcompany.com")
+        .getSingleResult();
   }
 
   @Test
   void shouldReturnUserWhenUserExists() throws Exception {
-    var user = createUser();
+    var user = findUser();
     var userDtoExpected = UserOutputDto.from(user);
 
     var request = get(URL_USERS + user.getEmail());
@@ -60,7 +61,7 @@ class GetUserByEmailApiTest {
 
   @Test
   void shouldReturnNotFoundWhenUserDoesNotExist() throws Exception {
-    var request = get(URL_USERS + DEFAULT_USER_EMAIL);
+    var request = get(URL_USERS + ALTERNATIVE_USER_EMAIL);
     mockMvc.perform(request)
         .andExpect(status().isNotFound());
   }
