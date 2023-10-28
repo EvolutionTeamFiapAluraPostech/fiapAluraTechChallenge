@@ -7,6 +7,7 @@ import static br.com.fiapbook.user.model.messages.UserMessages.USER_PASSWORD_MUS
 
 import br.com.fiapbook.shared.exception.ValidatorException;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.FieldError;
 
 @Component
 public class UserPasswordStrengthValidator {
@@ -24,27 +25,32 @@ public class UserPasswordStrengthValidator {
   private void validateNumberInPassword(String password) {
     var numberCharInPassword = "(.*[0-9].*)";
     if (!password.matches(numberCharInPassword)) {
-      throw new ValidatorException(USER_PASSWORD_MUST_HAVE_AT_LEAST_ONE_NUMBER_CHAR);
+      throw new ValidatorException(new FieldError(this.getClass().getSimpleName(), "password",
+          USER_PASSWORD_MUST_HAVE_AT_LEAST_ONE_NUMBER_CHAR));
     }
   }
 
   private void validateLowerCharacterInPassword(String password) {
     var lowerCharInPassword = "(.*[a-z].*)";
     if (!password.matches(lowerCharInPassword)) {
-      throw new ValidatorException(USER_PASSWORD_MUST_HAVE_AT_LEAST_ONE_LOWER_CHAR);
+      throw new ValidatorException(new FieldError(this.getClass().getSimpleName(), "password",
+          USER_PASSWORD_MUST_HAVE_AT_LEAST_ONE_LOWER_CHAR));
     }
   }
+
   private void validateUpperCharacterInPassword(String password) {
     var upperCharInPassword = "(.*[A-Z].*)";
     if (!password.matches(upperCharInPassword)) {
-      throw new ValidatorException(USER_PASSWORD_MUST_HAVE_AT_LEAST_ONE_UPPER_CHAR);
+      throw new ValidatorException(new FieldError(this.getClass().getSimpleName(), "password",
+          USER_PASSWORD_MUST_HAVE_AT_LEAST_ONE_UPPER_CHAR));
     }
   }
 
   private void validateSpecialCharacterInPassword(String password) {
     var specialCharInPassword = "(.*[@#$%^&+=].*)";
     if (!password.matches(specialCharInPassword)) {
-      throw new ValidatorException(USER_PASSWORD_MUST_HAVE_AT_LEAST_ONE_SPECIAL_CHAR);
+      throw new ValidatorException(new FieldError(this.getClass().getSimpleName(), "password",
+          USER_PASSWORD_MUST_HAVE_AT_LEAST_ONE_SPECIAL_CHAR));
     }
   }
 }

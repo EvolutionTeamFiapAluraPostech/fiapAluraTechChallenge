@@ -8,9 +8,9 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import br.com.fiapbook.shared.exception.NoResultException;
 import br.com.fiapbook.shared.model.entity.validator.EmailValidator;
 import br.com.fiapbook.user.model.service.UserService;
-import jakarta.persistence.NoResultException;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -49,7 +49,7 @@ class GetUserByEmailUseCaseTest {
 
     assertThatThrownBy(() -> getUserByEmailUseCase.execute(userEmail))
         .isInstanceOf(NoResultException.class)
-        .hasMessage(USER_EMAIL_NOT_FOUND.formatted(userEmail));
+        .hasMessageContaining(USER_EMAIL_NOT_FOUND.formatted(userEmail));
 
     verify(emailValidator).validate(userEmail);
   }

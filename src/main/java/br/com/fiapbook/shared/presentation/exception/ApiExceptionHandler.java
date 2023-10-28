@@ -1,14 +1,15 @@
 package br.com.fiapbook.shared.presentation.exception;
 
 import br.com.fiapbook.shared.exception.DuplicatedException;
+import br.com.fiapbook.shared.exception.NoResultException;
 import br.com.fiapbook.shared.exception.ValidatorException;
 import br.com.fiapbook.shared.presentation.dto.ErrorDto;
-import jakarta.persistence.NoResultException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -17,15 +18,15 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class ApiExceptionHandler {
 
   @ExceptionHandler(DuplicatedException.class)
-  public ResponseEntity<?> handlerDuplicatedException(DuplicatedException duplicatedException) {
-    var error = duplicatedException.getMessage();
-    return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+  public ResponseEntity<?> handlerDuplicatedException(DuplicatedException exception) {
+    var error = exception.getFieldError();
+    return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorDto(error));
   }
 
   @ExceptionHandler(ValidatorException.class)
-  public ResponseEntity<?> handlerValidatorException(ValidatorException validatorException) {
-    var error = validatorException.getMessage();
-    return ResponseEntity.badRequest().body(error);
+  public ResponseEntity<?> handlerValidatorException(ValidatorException exception) {
+    var error = exception.getFieldError();
+    return ResponseEntity.badRequest().body(new ErrorDto(error));
   }
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -36,26 +37,30 @@ public class ApiExceptionHandler {
   }
 
   @ExceptionHandler(NoResultException.class)
-  public ResponseEntity<?> handlerNoResultException(NoResultException noResultException) {
-    var error = noResultException.getMessage();
-    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+  public ResponseEntity<?> handlerNoResultException(NoResultException exception) {
+    var error = exception.getFieldError();
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDto(error));
   }
 
   @ExceptionHandler(HttpMessageNotReadableException.class)
-  public ResponseEntity<?> handlerBadRequest(HttpMessageNotReadableException ex) {
-    return ResponseEntity.badRequest().body(ex.getMessage());
+  public ResponseEntity<?> handlerBadRequest(HttpMessageNotReadableException exception) {
+    var error = new FieldError(HttpMessageNotReadableException.class.getSimpleName(), "",
+        exception.getMessage());
+    return ResponseEntity.badRequest().body(new ErrorDto(error));
   }
 
   @ExceptionHandler(AuthenticationException.class)
   public ResponseEntity<?> handlerUnauthorized(AuthenticationException exception) {
-    var error = exception.getMessage();
-    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
+    var error = new FieldError(AuthenticationException.class.getSimpleName(), "Authentication",
+        exception.getMessage());
+    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorDto(error));
   }
 
   @ExceptionHandler(AccessDeniedException.class)
   public ResponseEntity<?> handlerForbbiden(AccessDeniedException exception) {
-    var error = exception.getMessage();
-    return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
+    var error = new FieldError(AccessDeniedException.class.getSimpleName(), "",
+        exception.getMessage());
+    return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorDto(error));
   }
 
   @ExceptionHandler(Exception.class)

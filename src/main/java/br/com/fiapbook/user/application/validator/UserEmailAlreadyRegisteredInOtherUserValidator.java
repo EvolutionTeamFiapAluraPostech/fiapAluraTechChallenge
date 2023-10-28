@@ -7,6 +7,7 @@ import br.com.fiapbook.user.model.entity.User;
 import br.com.fiapbook.user.model.service.UserService;
 import java.util.UUID;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.FieldError;
 
 @Component
 public class UserEmailAlreadyRegisteredInOtherUserValidator {
@@ -17,10 +18,11 @@ public class UserEmailAlreadyRegisteredInOtherUserValidator {
     this.userService = userService;
   }
 
-  public void validate(String userUuid, String email){
+  public void validate(String userUuid, String email) {
     var user = userService.findByEmail(email);
     if (user.isPresent() && emailAlreadyExistsInOtherUser(userUuid, user.get())) {
-      throw new DuplicatedException(USER_EMAIL_ALREADY_EXISTS.formatted(email));
+      throw new DuplicatedException(new FieldError(this.getClass().getSimpleName(), "email",
+          USER_EMAIL_ALREADY_EXISTS.formatted(email)));
     }
   }
 

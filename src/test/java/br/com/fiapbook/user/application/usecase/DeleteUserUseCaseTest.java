@@ -9,10 +9,10 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import br.com.fiapbook.shared.exception.NoResultException;
 import br.com.fiapbook.shared.exception.ValidatorException;
 import br.com.fiapbook.shared.model.entity.validator.UuidValidator;
 import br.com.fiapbook.user.model.service.UserService;
-import jakarta.persistence.NoResultException;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

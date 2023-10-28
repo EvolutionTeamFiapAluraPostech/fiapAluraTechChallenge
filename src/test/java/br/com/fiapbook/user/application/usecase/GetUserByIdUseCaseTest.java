@@ -7,9 +7,9 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import br.com.fiapbook.shared.exception.NoResultException;
 import br.com.fiapbook.shared.model.entity.validator.UuidValidator;
 import br.com.fiapbook.user.model.service.UserService;
-import jakarta.persistence.NoResultException;
 import java.util.Optional;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
@@ -47,7 +47,7 @@ class GetUserByIdUseCaseTest {
 
     assertThatThrownBy(() -> getUserByIdUseCase.execute(userUuid.toString()))
         .isInstanceOf(NoResultException.class)
-        .hasMessage(USER_ID_NOT_FOUND.formatted(userUuid));
+        .hasMessageContaining(USER_ID_NOT_FOUND.formatted(userUuid));
 
     verify(uuidValidator).validate(userUuid.toString());
   }

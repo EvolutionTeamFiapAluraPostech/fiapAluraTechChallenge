@@ -1,8 +1,15 @@
 package br.com.fiapbook.shared.exception;
 
+import lombok.Getter;
+import org.springframework.validation.FieldError;
+
+@Getter
 public class ValidatorException extends RuntimeException {
 
-  public ValidatorException(String message) {
-    super(message);
+  private final FieldError fieldError;
+
+  public ValidatorException(FieldError fieldError) {
+    super(fieldError.getDefaultMessage());
+    this.fieldError = fieldError;
   }
 }
