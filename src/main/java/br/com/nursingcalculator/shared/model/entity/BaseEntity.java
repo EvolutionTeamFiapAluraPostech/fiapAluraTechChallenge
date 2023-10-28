@@ -18,6 +18,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.Where;
 
 @MappedSuperclass
 @Data
@@ -26,6 +27,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @AllArgsConstructor
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @EntityListeners(AudittingEntityListener.class)
+@Where(clause = "deleted = false")
 public abstract class BaseEntity implements Serializable, AuditableEntity {
 
   @Id
