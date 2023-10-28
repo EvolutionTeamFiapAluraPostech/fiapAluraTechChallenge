@@ -3,7 +3,7 @@ package br.com.fiapbook.shared.testData.user;
 import br.com.fiapbook.user.model.entity.User;
 import java.util.UUID;
 
-public class UserTestData {
+public final class UserTestData {
   public static final UUID DEFAULT_USER_UUID = UUID.randomUUID();
   public static final String DEFAULT_USER_UUID_FROM_STRING = DEFAULT_USER_UUID.toString();
   public static final String DEFAULT_USER_NAME = "Thomas Anderson";

@@ -1,8 +1,9 @@
 package br.com.fiapbook.user.model.service;
 
-import br.com.fiapbook.user.model.entity.User;
+import static br.com.fiapbook.user.model.messages.UserMessages.USER_EMAIL_NOT_FOUND;
+
 import br.com.fiapbook.user.infrastructure.repository.UserRepository;
-import br.com.fiapbook.user.model.messages.UserMessages;
+import br.com.fiapbook.user.model.entity.User;
 import jakarta.persistence.NoResultException;
 import java.util.Optional;
 import java.util.UUID;
@@ -33,7 +34,7 @@ public class UserService {
 
   public User findByEmailRequired(String email) {
     return userRepository.findByEmail(email)
-        .orElseThrow(() -> new NoResultException(UserMessages.USER_EMAIL_NOT_FOUND.formatted(email)));
+        .orElseThrow(() -> new NoResultException(USER_EMAIL_NOT_FOUND.formatted(email)));
   }
 
   public Page<User> findByNamePageable(String name, Pageable pageable) {
