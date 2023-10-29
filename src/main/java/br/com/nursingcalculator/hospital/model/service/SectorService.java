@@ -7,6 +7,8 @@ import br.com.nursingcalculator.hospital.model.entity.Sector;
 import jakarta.persistence.NoResultException;
 import java.util.Optional;
 import java.util.UUID;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -29,5 +31,9 @@ public class SectorService {
   public Sector findSectorRequiredById(UUID uuid) {
     return sectorRepository.findById(uuid)
         .orElseThrow(() -> new NoResultException(SECTOR_ID_NOT_FOUND.formatted(uuid)));
+  }
+
+  public Page<Sector> getAllSectorsPaginated(Pageable pageable) {
+    return sectorRepository.findAll(pageable);
   }
 }
