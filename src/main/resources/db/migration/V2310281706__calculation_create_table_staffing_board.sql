@@ -7,7 +7,7 @@ create table if not exists "calculation_management"."staffing_board"
     "created_by"              varchar(255)                null,
     "updated_at"              timestamp without time zone null,
     "updated_by"              varchar(255)                null,
-    "state"                   boolean                     not null default true,
+    "state"                   varchar(20)                 not null default true,
     "hospital_id"             uuid                        not null
         constraint fk_hospital_staffing_board references "hospital_management"."hospitals",
     "department_id"           uuid                        not null
