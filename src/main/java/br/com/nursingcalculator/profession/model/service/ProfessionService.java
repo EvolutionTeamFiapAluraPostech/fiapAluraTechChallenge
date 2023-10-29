@@ -7,6 +7,8 @@ import br.com.nursingcalculator.profession.model.entity.Profession;
 import jakarta.persistence.NoResultException;
 import java.util.Optional;
 import java.util.UUID;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -29,5 +31,9 @@ public class ProfessionService {
   public Profession findProfessionRequiredById(UUID uuid) {
     return professionRepository.findById(uuid)
         .orElseThrow(() -> new NoResultException(PROFESSION_ID_NOT_FOUND.formatted(uuid)));
+  }
+
+  public Page<Profession> getAllProfessionsPaginated(Pageable pageable) {
+    return professionRepository.findAll(pageable);
   }
 }
