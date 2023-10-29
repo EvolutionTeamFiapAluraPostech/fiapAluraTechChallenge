@@ -1,8 +1,10 @@
 package br.com.nursingcalculator.calculation.presentation.api;
 
 import br.com.nursingcalculator.calculation.application.usecase.GetStaffingBoardByIdUseCase;
+import br.com.nursingcalculator.calculation.application.usecase.GetStaffingBoardForTestingUseCase;
 import br.com.nursingcalculator.calculation.application.usecase.StaffingBoardCalculateUseCase;
 import br.com.nursingcalculator.calculation.presentation.dto.StaffingBoardDto;
+import br.com.nursingcalculator.calculation.presentation.dto.StaffingBoardTestingDto;
 import jakarta.validation.Valid;
 import java.util.Collections;
 import org.springframework.http.HttpStatus;
@@ -20,11 +22,14 @@ public class StaffingBoardApi {
 
   private final StaffingBoardCalculateUseCase staffingBoardCalculateUseCase;
   private final GetStaffingBoardByIdUseCase getStaffingBoardByIdUseCase;
+  private final GetStaffingBoardForTestingUseCase getStaffingBoardForTestingUseCase;
 
   public StaffingBoardApi(StaffingBoardCalculateUseCase staffingBoardCalculateUseCase,
-      GetStaffingBoardByIdUseCase getStaffingBoardByIdUseCase) {
+      GetStaffingBoardByIdUseCase getStaffingBoardByIdUseCase,
+      GetStaffingBoardForTestingUseCase getStaffingBoardForTestingUseCase) {
     this.staffingBoardCalculateUseCase = staffingBoardCalculateUseCase;
     this.getStaffingBoardByIdUseCase = getStaffingBoardByIdUseCase;
+    this.getStaffingBoardForTestingUseCase = getStaffingBoardForTestingUseCase;
   }
 
   @PostMapping
@@ -40,5 +45,14 @@ public class StaffingBoardApi {
   public StaffingBoardDto getCalculation(@PathVariable String calculationId) {
     var staffingBoard = getStaffingBoardByIdUseCase.execute(calculationId);
     return StaffingBoardDto.from(staffingBoard, Collections.emptyList());
+  }
+
+  @GetMapping("/generate-json-request-body-for-manual-testing")
+  public StaffingBoardTestingDto generateJsonRequestBodyForManualTest() {
+    var staffingBoard = getStaffingBoardForTestingUseCase.execute();
+    var department = staffingBoard.getDepartment();
+    var sectors = department.getSectors();
+    var sectorProfessions = sectors.stream().flatMap(sector -> sector.getSectorProfessions().stream()).toList();
+    return StaffingBoardTestingDto.from(staffingBoard, sectorProfessions);
   }
 }

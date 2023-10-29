@@ -31,4 +31,7 @@ public class StaffingBoardService {
         .orElseThrow(() -> new NoResultException(STAFFING_BOARD_ID_NOT_FOUND.formatted(uuid)));
   }
 
+  public StaffingBoard findStaffingBoardTopByOrderByIdDesc() {
+    return staffingBoardRepository.findTopByOrderByIdDesc();
+  }
 }
