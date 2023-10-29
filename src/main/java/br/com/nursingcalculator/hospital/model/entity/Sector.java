@@ -27,8 +27,8 @@ public class Sector extends BaseEntity {
   private Boolean active = true;
 
   @Column(nullable = false)
-  private String description;
+  private String name;
 
   @OneToMany(mappedBy = "sector", fetch = FetchType.LAZY)
-  private List<SectorProfessions> professions = new ArrayList<>();
+  private List<SectorProfessions> sectorProfessions = new ArrayList<>();
 }

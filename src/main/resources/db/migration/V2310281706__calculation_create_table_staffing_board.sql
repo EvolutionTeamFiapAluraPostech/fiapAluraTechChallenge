@@ -16,6 +16,8 @@ create table if not exists "calculation_management"."staffing_board"
         constraint fk_profession_staffing_board references "profession_management"."professions",
     "calculation_id"          uuid                        not null
         constraint fk_calculation_staffing_board references "calculation_management"."calculations",
+    "days_per_week"           smallint                    null,
+    "weekly_work_load"        smallint                    null,
     "total_hours"             numeric(10, 2)              null,
     "marinho_constant"        numeric(10, 4)              null,
     "number_of_collaborators" smallint                    null,

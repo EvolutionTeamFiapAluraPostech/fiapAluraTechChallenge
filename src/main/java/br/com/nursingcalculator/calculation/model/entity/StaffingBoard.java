@@ -28,7 +28,7 @@ import lombok.experimental.SuperBuilder;
 public class StaffingBoard extends BaseEntity {
 
   @Enumerated(EnumType.STRING)
-  @Column(nullable = false)
+  @Column(name = "state", nullable = false)
   private CalculationState calculationState;
 
   @ManyToOne
@@ -46,6 +46,10 @@ public class StaffingBoard extends BaseEntity {
   @ManyToOne
   @JoinColumn(name = "calculation_id")
   private Calculation calculation;
+
+  private Integer daysPerWeek;
+
+  private Integer weeklyWorkLoad;
 
   private BigDecimal totalHours;
 
