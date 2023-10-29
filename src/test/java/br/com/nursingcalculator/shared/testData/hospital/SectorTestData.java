@@ -8,7 +8,7 @@ public final class SectorTestData {
 
   public static Sector createNewSector() {
     return Sector.builder()
-        .description(DEFAULT_SECTOR_NAME)
+        .name(DEFAULT_SECTOR_NAME)
         .build();
   }
 }

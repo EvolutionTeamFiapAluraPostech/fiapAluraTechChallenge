@@ -32,7 +32,7 @@ class SectorServiceTest {
     var sectorSaved = sectorService.save(sector);
 
     assertThat(sectorSaved).isNotNull();
-    assertThat(sectorSaved.getDescription()).isEqualTo(sector.getDescription());
+    assertThat(sectorSaved.getName()).isEqualTo(sector.getName());
     assertThat(sectorSaved.getActive()).isEqualTo(sector.getActive());
   }
 
@@ -44,7 +44,7 @@ class SectorServiceTest {
     var sectorFound = sectorService.findSectorById(sector.getId()).orElse(null);
 
     assertThat(sectorFound).isNotNull();
-    assertThat(sectorFound.getDescription()).isEqualTo(sector.getDescription());
+    assertThat(sectorFound.getName()).isEqualTo(sector.getName());
   }
 
   @Test
@@ -65,7 +65,7 @@ class SectorServiceTest {
     var sectorFound = sectorService.findSectorRequiredById(sector.getId());
 
     assertThat(sectorFound).isNotNull();
-    assertThat(sectorFound.getDescription()).isEqualTo(sector.getDescription());
+    assertThat(sectorFound.getName()).isEqualTo(sector.getName());
   }
 
   @Test
