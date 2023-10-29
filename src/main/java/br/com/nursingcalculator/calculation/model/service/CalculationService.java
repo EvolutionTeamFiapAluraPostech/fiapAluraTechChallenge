@@ -6,6 +6,8 @@ import br.com.nursingcalculator.calculation.infrastructure.repository.Calculatio
 import br.com.nursingcalculator.calculation.model.entity.Calculation;
 import jakarta.persistence.NoResultException;
 import java.util.UUID;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,5 +22,9 @@ public class CalculationService {
   public Calculation findCalculationRequiredById(UUID uuid) {
     return calculationRepository.findById(uuid)
         .orElseThrow(() -> new NoResultException(CALCULATION_ID_NOT_FOUND.formatted(uuid)));
+  }
+
+  public Page<Calculation> getAllCalculationsPaginated(Pageable pageable) {
+    return calculationRepository.findAll(pageable);
   }
 }
