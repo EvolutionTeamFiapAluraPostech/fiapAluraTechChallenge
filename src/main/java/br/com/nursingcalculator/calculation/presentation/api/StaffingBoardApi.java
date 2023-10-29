@@ -1,9 +1,13 @@
 package br.com.nursingcalculator.calculation.presentation.api;
 
+import br.com.nursingcalculator.calculation.application.usecase.GetStaffingBoardByIdUseCase;
 import br.com.nursingcalculator.calculation.application.usecase.StaffingBoardCalculateUseCase;
 import br.com.nursingcalculator.calculation.presentation.dto.StaffingBoardDto;
 import jakarta.validation.Valid;
+import java.util.Collections;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,9 +19,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class StaffingBoardApi {
 
   private final StaffingBoardCalculateUseCase staffingBoardCalculateUseCase;
+  private final GetStaffingBoardByIdUseCase getStaffingBoardByIdUseCase;
 
-  public StaffingBoardApi(StaffingBoardCalculateUseCase staffingBoardCalculateUseCase) {
+  public StaffingBoardApi(StaffingBoardCalculateUseCase staffingBoardCalculateUseCase,
+      GetStaffingBoardByIdUseCase getStaffingBoardByIdUseCase) {
     this.staffingBoardCalculateUseCase = staffingBoardCalculateUseCase;
+    this.getStaffingBoardByIdUseCase = getStaffingBoardByIdUseCase;
   }
 
   @PostMapping
@@ -27,5 +34,11 @@ public class StaffingBoardApi {
     var sectorProfessionsQuantities = StaffingBoardDto.toSectorProfessionsWithQuantities(staffingBoardDto);
     var staffingBoardUpdated = staffingBoardCalculateUseCase.execute(staffingBoard, sectorProfessionsQuantities);
     return StaffingBoardDto.from(staffingBoardUpdated, staffingBoardDto.sectorProcedureNumberDtoList());
+  }
+
+  @GetMapping("/{calculationId}")
+  public StaffingBoardDto getCalculation(@PathVariable String calculationId) {
+    var staffingBoard = getStaffingBoardByIdUseCase.execute(calculationId);
+    return StaffingBoardDto.from(staffingBoard, Collections.emptyList());
   }
 }
