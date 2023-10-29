@@ -18,8 +18,8 @@ public class DepartmentService {
     this.departmentRepository = departmentRepository;
   }
 
-  public Department save(Department hospital) {
-    return departmentRepository.save(hospital);
+  public Department save(Department department) {
+    return departmentRepository.save(department);
   }
 
   public Optional<Department> findDepartmentById(UUID uuid) {
