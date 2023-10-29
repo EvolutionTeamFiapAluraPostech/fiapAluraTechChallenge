@@ -45,8 +45,7 @@ public class StaffingBoardCalculateUseCase {
   }
 
   private StaffingBoard setAttributesInStaffingBoard(StaffingBoard staffingBoard) {
-    var staffingBoardFound = staffingBoardService.findStaffingBoardById(staffingBoard.getId())
-        .orElse(null);
+    var staffingBoardFound = checkIfIsNewCalculate(staffingBoard);
 
     var hospital = hospitalService.findHospitalRequiredById(staffingBoard.getHospital().getId());
     var department = departmentService.findDepartmentRequiredById(
@@ -71,6 +70,14 @@ public class StaffingBoardCalculateUseCase {
       staffingBoardFound.setCalculationState(CalculationState.ANDAMENTO);
       return staffingBoardFound;
     }
+  }
+
+  private StaffingBoard checkIfIsNewCalculate(StaffingBoard staffingBoard) {
+    if (staffingBoard.getId() != null) {
+      return staffingBoardService.findStaffingBoardById(staffingBoard.getId())
+          .orElse(null);
+    }
+    return null;
   }
 
   private void calculateNumberOfCollaborators(StaffingBoard staffingBoard,
@@ -125,8 +132,9 @@ public class StaffingBoardCalculateUseCase {
   }
 
   private static BigDecimal calculateMarinhoConstant(StaffingBoard staffingBoard) {
-    var divisor = new BigDecimal(staffingBoard.getDaysPerWeek()).divide(
-        new BigDecimal(staffingBoard.getWeeklyWorkLoad())).setScale(4, RoundingMode.HALF_EVEN);
-    return divisor.multiply(TECHNICAL_SECURITY_INDEX);
+    var daysPerWeek = staffingBoard.getDaysPerWeek().doubleValue();
+    var weeklyWorkLoad = staffingBoard.getWeeklyWorkLoad().doubleValue();
+    var divisor = new BigDecimal(daysPerWeek / weeklyWorkLoad);
+    return divisor.multiply(TECHNICAL_SECURITY_INDEX).setScale(4, RoundingMode.HALF_EVEN);
   }
 }
