@@ -7,6 +7,8 @@ import br.com.nursingcalculator.hospital.model.entity.Hospital;
 import jakarta.persistence.NoResultException;
 import java.util.Optional;
 import java.util.UUID;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -29,5 +31,9 @@ public class HospitalService {
   public Hospital findHospitalRequiredById(UUID uuid) {
     return hospitalRepository.findById(uuid)
         .orElseThrow(() -> new NoResultException(HOSPITAL_ID_NOT_FOUND.formatted(uuid)));
+  }
+
+  public Page<Hospital> getAllHospitalsPaginated(Pageable pageable) {
+    return hospitalRepository.findAll(pageable);
   }
 }
