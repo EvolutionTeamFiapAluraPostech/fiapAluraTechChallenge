@@ -4,6 +4,8 @@ import br.com.nursingcalculator.calculation.model.entity.CalculationState;
 import br.com.nursingcalculator.calculation.model.entity.StaffingBoard;
 import br.com.nursingcalculator.calculation.model.service.CalculationService;
 import br.com.nursingcalculator.calculation.model.service.StaffingBoardService;
+import br.com.nursingcalculator.hospital.model.entity.Department;
+import br.com.nursingcalculator.hospital.model.entity.Sector;
 import br.com.nursingcalculator.hospital.model.entity.SectorProfessions;
 import br.com.nursingcalculator.hospital.model.service.DepartmentService;
 import br.com.nursingcalculator.hospital.model.service.HospitalService;
@@ -11,6 +13,7 @@ import br.com.nursingcalculator.profession.model.service.ProfessionService;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Map;
+import java.util.Map.Entry;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,8 +48,6 @@ public class StaffingBoardCalculateUseCase {
   }
 
   private StaffingBoard setAttributesInStaffingBoard(StaffingBoard staffingBoard) {
-    var staffingBoardFound = checkIfIsNewCalculate(staffingBoard);
-
     var hospital = hospitalService.findHospitalRequiredById(staffingBoard.getHospital().getId());
     var department = departmentService.findDepartmentRequiredById(
         staffingBoard.getDepartment().getId());
@@ -55,6 +56,7 @@ public class StaffingBoardCalculateUseCase {
     var calculation = calculationService.findCalculationRequiredById(
         staffingBoard.getCalculation().getId());
 
+    var staffingBoardFound = checkIfIsNewCalculate(staffingBoard);
     if (staffingBoardFound == null) {
       staffingBoard.setHospital(hospital);
       staffingBoard.setDepartment(department);
@@ -95,7 +97,7 @@ public class StaffingBoardCalculateUseCase {
     staffingBoard.setNumberOfCollaborators(numberOfCollaborators);
   }
 
-  private static Integer calculateNumberOfCollaborators(BigDecimal totalHoursProcedure,
+  private Integer calculateNumberOfCollaborators(BigDecimal totalHoursProcedure,
       BigDecimal marinhoConstant) {
     if (totalHoursProcedure != null && marinhoConstant != null) {
       var numberOfCollaborators = totalHoursProcedure.multiply(marinhoConstant)
@@ -105,33 +107,51 @@ public class StaffingBoardCalculateUseCase {
     return 0;
   }
 
-  private static BigDecimal calculateTotalHoursPerProcedure(StaffingBoard staffingBoard,
+  private BigDecimal calculateTotalHoursPerProcedure(StaffingBoard staffingBoard,
       Map<SectorProfessions, Integer> sectorProfessionsQuantities) {
     var totalHoursProcedure = BigDecimal.ZERO;
+
     var departments = staffingBoard.getDepartment();
     for (Map.Entry<SectorProfessions, Integer> entry : sectorProfessionsQuantities.entrySet()) {
-      var sectorId = entry.getKey().getSector().getId();
+      var sectorFound = getSectorIfItWasFound(entry, departments);
 
-      var sectorFound = departments.getSectors().stream()
-          .filter(sector -> sector.getId().equals(sectorId)).findFirst().orElse(null);
       if (sectorFound != null) {
-        var sectorProfessionsFound = sectorFound.getSectorProfessions().stream()
-            .filter(sectorProfessions -> sectorProfessions.getProfession().getId()
-                .equals(entry.getKey().getProfession().getId())).findFirst().orElse(null);
+        var sectorProfessionsFound = getSectorProfessionsFound(entry, sectorFound);
 
         var hourProcedure = BigDecimal.ZERO;
-        if (sectorProfessionsFound != null && sectorProfessionsFound.getTotalHours() != null
-            && entry.getValue() != null) {
+        if (isSectorHasTotalHoursAndQuantitiesOfProceduresToCalculate(entry,
+            sectorProfessionsFound)) {
           hourProcedure = sectorProfessionsFound.getTotalHours()
               .multiply(new BigDecimal(entry.getValue())).setScale(2, RoundingMode.HALF_EVEN);
         }
+
         totalHoursProcedure = totalHoursProcedure.add(hourProcedure);
       }
     }
     return totalHoursProcedure;
   }
 
-  private static BigDecimal calculateMarinhoConstant(StaffingBoard staffingBoard) {
+  private boolean isSectorHasTotalHoursAndQuantitiesOfProceduresToCalculate(
+      Entry<SectorProfessions, Integer> entry, SectorProfessions sectorProfessionsFound) {
+    return sectorProfessionsFound != null && sectorProfessionsFound.getTotalHours() != null
+        && entry.getValue() != null;
+  }
+
+  private SectorProfessions getSectorProfessionsFound(Entry<SectorProfessions, Integer> entry,
+      Sector sectorFound) {
+    return sectorFound.getSectorProfessions().stream()
+        .filter(sectorProfessions -> sectorProfessions.getProfession().getId()
+            .equals(entry.getKey().getProfession().getId())).findFirst().orElse(null);
+  }
+
+  private Sector getSectorIfItWasFound(Entry<SectorProfessions, Integer> entry,
+      Department departments) {
+    var sectorId = entry.getKey().getSector().getId();
+    return departments.getSectors().stream()
+        .filter(sector -> sector.getId().equals(sectorId)).findFirst().orElse(null);
+  }
+
+  private BigDecimal calculateMarinhoConstant(StaffingBoard staffingBoard) {
     var daysPerWeek = staffingBoard.getDaysPerWeek().doubleValue();
     var weeklyWorkLoad = staffingBoard.getWeeklyWorkLoad().doubleValue();
     var divisor = new BigDecimal(daysPerWeek / weeklyWorkLoad);
