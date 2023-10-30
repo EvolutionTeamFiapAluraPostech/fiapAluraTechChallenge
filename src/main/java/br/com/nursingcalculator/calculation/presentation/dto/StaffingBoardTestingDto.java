@@ -33,8 +33,10 @@ public record StaffingBoardTestingDto(
   public static StaffingBoardTestingDto from(StaffingBoard staffingBoard,
       List<SectorProfessions> sectorProfessions) {
     var sectorProcedureTestingListDto = new ArrayList<SectorProcedureTestingDto>();
-    var quantity = 30;
-    for (SectorProfessions sectorProfession : sectorProfessions) {
+    var sectorProfessionsPerProfession = sectorProfessions.stream()
+        .filter(sp -> sp.getProfession().equals(staffingBoard.getProfession())).toList();
+    var quantity = 10;
+    for (SectorProfessions sectorProfession : sectorProfessionsPerProfession) {
       var sectorProcedureTestingDto = new SectorProcedureTestingDto(
           sectorProfession.getSector().getId().toString(), quantity);
       sectorProcedureTestingListDto.add(sectorProcedureTestingDto);
