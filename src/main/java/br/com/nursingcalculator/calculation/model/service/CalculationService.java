@@ -27,4 +27,8 @@ public class CalculationService {
   public Page<Calculation> getAllCalculationsPaginated(Pageable pageable) {
     return calculationRepository.findAll(pageable);
   }
+
+  public Calculation findTheLastCalculationSaved() {
+    return calculationRepository.findTopByOrderByIdDesc();
+  }
 }

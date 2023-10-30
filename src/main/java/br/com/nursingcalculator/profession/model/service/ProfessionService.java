@@ -36,4 +36,8 @@ public class ProfessionService {
   public Page<Profession> getAllProfessionsPaginated(Pageable pageable) {
     return professionRepository.findAll(pageable);
   }
+
+  public Profession findProfessionByDescription(String description) {
+    return professionRepository.findByDescription(description);
+  }
 }

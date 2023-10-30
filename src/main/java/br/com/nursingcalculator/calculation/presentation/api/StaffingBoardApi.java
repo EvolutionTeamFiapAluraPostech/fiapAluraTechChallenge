@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,11 +35,15 @@ public class StaffingBoardApi {
 
   @PostMapping
   @ResponseStatus(HttpStatus.OK)
-  public StaffingBoardDto calculateStaffingBoard(@RequestBody @Valid StaffingBoardDto staffingBoardDto) {
+  public StaffingBoardDto calculateStaffingBoard(
+      @RequestBody @Valid StaffingBoardDto staffingBoardDto) {
     var staffingBoard = StaffingBoardDto.toStaffingBoard(staffingBoardDto);
-    var sectorProfessionsQuantities = StaffingBoardDto.toSectorProfessionsWithQuantities(staffingBoardDto);
-    var staffingBoardUpdated = staffingBoardCalculateUseCase.execute(staffingBoard, sectorProfessionsQuantities);
-    return StaffingBoardDto.from(staffingBoardUpdated, staffingBoardDto.sectorProcedureNumberDtoList());
+    var sectorProfessionsQuantities = StaffingBoardDto.toSectorProfessionsWithQuantities(
+        staffingBoardDto);
+    var staffingBoardUpdated = staffingBoardCalculateUseCase.execute(staffingBoard,
+        sectorProfessionsQuantities);
+    return StaffingBoardDto.from(staffingBoardUpdated,
+        staffingBoardDto.sectorProcedureNumberDtoList());
   }
 
   @GetMapping("/{calculationId}")
@@ -48,11 +53,13 @@ public class StaffingBoardApi {
   }
 
   @GetMapping("/generate-json-request-body-for-manual-testing")
-  public StaffingBoardTestingDto generateJsonRequestBodyForManualTest() {
-    var staffingBoard = getStaffingBoardForTestingUseCase.execute();
+  public StaffingBoardTestingDto generateJsonRequestBodyForManualTest(
+      @RequestParam Integer daysOfWeek, @RequestParam Integer weeklyWorkLoad) {
+    var staffingBoard = getStaffingBoardForTestingUseCase.execute(daysOfWeek, weeklyWorkLoad);
     var department = staffingBoard.getDepartment();
     var sectors = department.getSectors();
-    var sectorProfessions = sectors.stream().flatMap(sector -> sector.getSectorProfessions().stream()).toList();
+    var sectorProfessions = sectors.stream()
+        .flatMap(sector -> sector.getSectorProfessions().stream()).toList();
     return StaffingBoardTestingDto.from(staffingBoard, sectorProfessions);
   }
 }

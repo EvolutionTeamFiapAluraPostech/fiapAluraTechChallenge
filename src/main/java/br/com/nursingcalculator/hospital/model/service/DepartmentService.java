@@ -36,4 +36,8 @@ public class DepartmentService {
   public Page<Department> getAllDepartmentsPaginated(Pageable pageable) {
     return departmentRepository.findAll(pageable);
   }
+
+  public Department findTheLastDepartmentSaved() {
+    return departmentRepository.findTopByOrderByIdDesc();
+  }
 }

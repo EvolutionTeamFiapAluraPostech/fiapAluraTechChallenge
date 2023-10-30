@@ -36,4 +36,8 @@ public class HospitalService {
   public Page<Hospital> getAllHospitalsPaginated(Pageable pageable) {
     return hospitalRepository.findAll(pageable);
   }
+
+  public Hospital findTheLastHospitalSaved() {
+    return hospitalRepository.findTopByOrderByIdDesc();
+  }
 }
