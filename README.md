@@ -37,8 +37,9 @@ Repositório do projeto do desafio Spring I da pós tech da FIAP/ALURA. Desenvol
 
 Para realizar o setup do projeto é necessário possuir o Java 17, docker 24 e docker-compose 1.29 instalado em sua máquina.
 Faca o download do projeto (https://github.com/EvolutionTeamFiapAluraPostech/fiapAluraTechChallenge) e atualize suas dependências com o gradle.
-Em seguida, inicie o projeto executando o start da IDE.
-O banco de dados da aplicação será automaticamente criado em um container, pois estamos utilizando uma feature do Spring Boot que identifica a existência de um arquivo docker-compose.yml na pasta raiz do projeto para criar automaticamente o banco de dados e o container.
+Antes de iniciar o projeto é necessário criar o banco de dados. O banco de dados está programado para ser criado em um container. 
+Para criar o container, execute o docker-compose.
+Acesse a pasta raiz do projeto, no mesmo local onde encontra-se o arquivo docker-compose.yml. Para executá-lo, execute o comando docker-compose up -d (para rodar detached e não prender o terminal).
 Para iniciar o projeto, basta executar o Spring Boot Run no IntelliJ.
 Após a inicialização do projeto, será necessário se autenticar, pois o Spring Security está habilitado. Para tanto, utilize o Postman (ou outra aplicação de sua preferência), crie um endpoint para realizar a autenticação, com a seguinte url **localhost:8080/authenticate**. No body, inclua um json contendo o atributo “email” com o valor “thomas.anderson@itcompany.com” e outro atributo “password” com o valor “@Bcd1234”. Realize a requisição para este endpoint para se obter o token JWT que deverá ser utilizado para consumir os demais endpoints do projeto.
 Segue abaixo instruções do endpoint para se autenticar na aplicação.
